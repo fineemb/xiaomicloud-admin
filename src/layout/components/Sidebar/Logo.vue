@@ -1,3 +1,11 @@
+<!--
+ * @Author        : fineemb
+ * @Github        : https://github.com/fineemb
+ * @Description   : s
+ * @Date          : 2020-03-03 22:04:12
+ * @LastEditors   : fineemb
+ * @LastEditTime  : 2020-03-04 20:28:35
+ -->
 <template>
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
@@ -24,8 +32,8 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Admin Template',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      title: '泛艺智能家居平台',
+      logo: '@/assets/logo1-480x480-white.png'
     }
   }
 }
