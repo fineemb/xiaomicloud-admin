@@ -57,6 +57,7 @@ export const constantRoutes = [
   {
     path: '/users',
     component: Layout,
+    meta: { roles: ['admin'] },
     children: [
       {
         path: 'index',
