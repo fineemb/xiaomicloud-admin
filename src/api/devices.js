@@ -4,7 +4,7 @@
  * @Description   : s
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-03 23:50:46
+ * @LastEditTime  : 2020-03-05 12:19:06
  */
 import request from '@/utils/request'
 
@@ -15,3 +15,28 @@ export function getList(params) {
     params
   })
 }
+
+export function addDevice(data) {
+  return request({
+    url: '/vue-admin-template/devices/add',
+    method: 'post',
+    data
+  })
+}
+
+export function delDevice(data) {
+  return request({
+    url: '/vue-admin-template/devices/del',
+    method: 'post',
+    data
+  })
+}
+
+export function upDataDevice(data) {
+  return request({
+    url: '/vue-admin-template/devices/updata',
+    method: 'post',
+    data
+  })
+}
+

@@ -4,7 +4,7 @@
  * @Description   :  f
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-04 22:07:33
+ * @LastEditTime  : 2020-03-05 12:20:07
  -->
 <template>
   <div class="app-container">
@@ -20,7 +20,7 @@
             <el-option label="窗帘" value="fine.curtain.fv1" />
           </el-select>
         </el-form-item>
-        <el-button type="primary" icon="el-icon-circle-plus" class="filter-item" @click="onSubmit('form')"> 创建</el-button>
+        <el-button type="primary" icon="el-icon-circle-plus" class="filter-item" @click.native="onSubmit('form')"> 创建</el-button>
         <el-button class="filter-item" @click="onCancel('form')">取消</el-button>
       </div>
     </el-form>
@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/devices'
+import { getList, addDevice, delDevice, upDataDevice } from '@/api/devices'
 
 export default {
   filters: {
@@ -155,9 +155,16 @@ export default {
     confirmEdit(row) {
       row.edit = false
       row.originalTitle = row.title
-      this.$message({
-        message: 'ID为 ' + row.did + ' 的设备名称更改成功',
-        type: 'success'
+      const newdata = {
+        did: row.did,
+        name: row.title
+      }
+      upDataDevice(newdata).then(response => {
+        this.listLoading = false
+        this.$message({
+          message: 'ID为 ' + row.did + ' 的设备名称更改成功',
+          type: 'success'
+        })
       })
     },
     delDevice(row) {
@@ -166,9 +173,16 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          message: '成功删除ID为 ' + row.did + ' 的设备',
-          type: 'success'
+        this.listLoading = true
+        const data = {
+          did: row.did
+        }
+        delDevice(data).then(response => {
+          this.listLoading = false
+          this.$message({
+            message: '成功删除ID为 ' + row.did + ' 的设备',
+            type: 'success'
+          })
         })
       }).catch(() => {
         this.$message({
@@ -180,7 +194,11 @@ export default {
     onSubmit(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$message('设备创建成功!')
+          this.listLoading = true
+          addDevice(this.form).then(response => {
+            this.listLoading = false
+            this.$message('设备创建成功!')
+          })
         } else {
           console.log('error submit!!')
           return false

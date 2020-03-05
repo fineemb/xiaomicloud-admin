@@ -4,15 +4,14 @@
  * @Description   : f
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-04 14:20:14
+ * @LastEditTime  : 2020-03-05 11:04:18
  */
 import Mock from 'mockjs'
 
 const data = Mock.mock({
   'items|25': [{
-    id: '@id',
+    uid: '@id',
     miid: '@string("number", 8)',
-    'status|1': ['published', 'draft', 'deleted'],
     name: '@name',
     display_time: '@datetime',
     permission: '@integer(1, 6)',

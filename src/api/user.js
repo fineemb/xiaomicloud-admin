@@ -4,13 +4,14 @@
  * @Description   : s
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-05 00:02:33
+ * @LastEditTime  : 2020-03-05 12:23:57
  */
 import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: 'https://egg.frp.jtsh.top/api/v1/signin',
+    // url: 'https://egg.frp.jtsh.top/api/v1/signin',
+    url: '/vue-admin-template/user/login',
     method: 'post',
     data
   })
