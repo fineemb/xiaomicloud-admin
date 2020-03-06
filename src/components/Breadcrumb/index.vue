@@ -1,3 +1,11 @@
+<!--
+ * @Author        : fineemb
+ * @Github        : https://github.com/fineemb
+ * @Description   : 
+ * @Date          : 2020-03-05 23:19:59
+ * @LastEditors   : fineemb
+ * @LastEditTime  : 2020-03-06 00:10:10
+ -->
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
@@ -33,7 +41,7 @@ export default {
       const first = matched[0]
 
       if (!this.isDashboard(first)) {
-        matched = [{ path: '/dashboard', meta: { title: 'Dashboard' }}].concat(matched)
+        matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
       }
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)

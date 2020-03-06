@@ -1,12 +1,22 @@
+/*
+ * @Author        : fineemb
+ * @Github        : https://github.com/fineemb
+ * @Description   : s
+ * @Date          : 2020-03-03 22:04:12
+ * @LastEditors   : fineemb
+ * @LastEditTime  : 2020-03-03 23:52:13
+ */
 import Mock from 'mockjs'
 import { param2Obj } from '../src/utils'
 
 import user from './user'
-import table from './table'
+import devices from './devices'
+import users from './users'
 
 const mocks = [
   ...user,
-  ...table
+  ...devices,
+  ...users
 ]
 
 // for front mock

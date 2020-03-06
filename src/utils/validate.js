@@ -1,3 +1,11 @@
+/*
+ * @Author        : fineemb
+ * @Github        : https://github.com/fineemb
+ * @Description   : 
+ * @Date          : 2020-03-05 23:19:59
+ * @LastEditors   : fineemb
+ * @LastEditTime  : 2020-03-06 09:14:44
+ */
 /**
  * Created by PanJiaChen on 16/11/18.
  */
@@ -15,6 +23,6 @@ export function isExternal(path) {
  * @returns {Boolean}
  */
 export function validUsername(str) {
-  const valid_map = ['admin', 'editor']
+  const valid_map = ['admin', 'editor', 'fineemb']
   return valid_map.indexOf(str.trim()) >= 0
 }
