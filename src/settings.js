@@ -2,13 +2,13 @@
  * @Author        : fineemb
  * @Github        : https://github.com/fineemb
  * @Description   : s
- * @Date          : 2020-03-03 22:04:12
+ * @Date          : 2020-03-05 23:19:59
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-04 19:49:18
+ * @LastEditTime  : 2020-03-08 00:27:46
  */
 module.exports = {
 
-  title: '智能家居',
+  title: '智能家居后台',
 
   /**
    * @type {boolean} true | false

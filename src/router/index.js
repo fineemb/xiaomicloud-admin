@@ -55,27 +55,58 @@ export const constantRoutes = [
     }]
   },
   {
-    path: '/users',
+    path: '/devices',
     component: Layout,
-    meta: { roles: ['admin'] },
     children: [
       {
         path: 'index',
-        name: 'Users',
+        name: 'Form',
+        component: () => import('@/views/devices/index'),
+        meta: { title: '设备管理', icon: 'devices' }
+      }
+    ]
+  }
+]
+
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
+  {
+    path: '/devicetype',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Form',
+        component: () => import('@/views/devicetype/index'),
+        meta: { title: '设备类型', icon: 'device-type' }
+      }
+    ]
+  },
+  {
+    path: '/users',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Form',
         component: () => import('@/views/users/index'),
         meta: { title: '用户管理', icon: 'user' }
       }
     ]
   },
   {
-    path: '/devices',
+    path: '/updatePass',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'index',
-        name: 'Devices',
-        component: () => import('@/views/devices/index'),
-        meta: { title: '设备管理', icon: 'table' }
+        name: 'Form',
+        component: () => import('@/views/updatePass/index'),
+        meta: { title: '修改密码', icon: 'user' }
       }
     ]
   },

@@ -4,19 +4,20 @@
  * @Description   :  f
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-09 21:14:53
+ * @LastEditTime  : 2020-03-08 00:21:44
  -->
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" :rules="rules">
       <div class="filter-container">
         <el-form-item prop="name" class="filter-item">
-          <el-input v-model="form.name" placeholder="小爱将用这个名称唤醒你的设备" />
+          <el-input v-model="form.name" placeholder="名称" />
         </el-form-item>
         <el-form-item prop="type" class="filter-item">
-          <el-select v-model="typename" placeholder="选择一个设备类型" @change="currentSel">
-            <el-option v-for="(item, index) in typelist" :key="item.id" :label="item.name" :value="index" />
-          </el-select>
+          <el-input v-model="form.type" placeholder="NodeRED设备类型" />
+        </el-form-item>
+        <el-form-item prop="miType" class="filter-item">
+          <el-input v-model="form.miType" placeholder="小米设备类型" />
         </el-form-item>
         <el-button type="primary" icon="el-icon-circle-plus" class="filter-item" @click.native="onSubmit('form')"> 创建</el-button>
         <el-button class="filter-item" @click="onCancel('form')">取消</el-button>
@@ -36,31 +37,31 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="设备名称" width="180px" align="center" sortable prop="name">
+
+      <el-table-column label="名称" width="200px" align="center" sortable prop="name">
         <template slot-scope="scope">
-          <template v-if="scope.row.edit">
-            <el-input v-model="scope.row.name" class="edit-input" size="small" />
-          </template>
+          <el-input v-if="scope.row.edit" v-model="scope.row.name" class="edit-input" size="small" />
           <span v-else>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="设备ID" width="250">
+      <el-table-column label="NR类型" width="200" align="center" sortable prop="type">
         <template slot-scope="scope">
-          {{ scope.row.did }}
+          <el-input v-if="scope.row.edit" v-model="scope.row.type" class="edit-input" size="small" />
+          <span v-else>{{ scope.row.type }}</span>
         </template>
       </el-table-column>
-
-      <el-table-column label="设备类型" width="250" align="center" sortable prop="type">
+      <el-table-column align="center" prop="created_at" label="IOT类型" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.row.type }}</span>
+          <el-input v-if="scope.row.edit" v-model="scope.row.miType" class="edit-input" size="small" />
+          <span v-else>{{ scope.row.miType }}</span>
         </template>
       </el-table-column>
-
       <el-table-column align="left" label="操作">
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.edit"
+            class="cancel-btn"
             size="small"
             icon="el-icon-refresh"
             type="warning"
@@ -99,8 +100,8 @@
 </template>
 
 <script>
-import { getList, addDevice, delDevice, upDataDevice } from '@/api/devices'
-import { getTypeList } from '@/api/devicetype'
+import { getTypeList, addType, delType, upDataType } from '@/api/devicetype'
+
 export default {
   filters: {
     statusFilter(status) {
@@ -115,9 +116,7 @@ export default {
   data() {
     return {
       list: null,
-      typelist: null,
       listLoading: true,
-      typename: '',
       form: {
         name: '',
         type: '',
@@ -125,7 +124,8 @@ export default {
       },
       rules: {
         name: [{ required: true, message: '请输入一个名称', trigger: 'blur' }],
-        type: [{ required: true, message: '请选择一个正确的设备类型', trigger: 'change' }]
+        type: [{ required: true, message: '请选择一个正确的设备类型', trigger: 'change' }],
+        miType: [{ required: true, message: '请选择一个正确的设备类型', trigger: 'change' }]
       }
     }
   },
@@ -134,25 +134,16 @@ export default {
   },
   methods: {
     fetchData() {
-      this.listLoading = true
-      getList().then(response => {
+      // this.listLoading = true
+      getTypeList().then(response => {
         const items = response.data.items
         this.list = items.map(v => {
           this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
           v.originalTitle = v.title //  will be used when user click the cancel botton
           return v
         })
-        getTypeList().then(response => {
-          const items = response.data.items
-          this.typelist = items
-          this.listLoading = false
-        })
+        this.listLoading = false
       })
-    },
-    currentSel(selVal) {
-      this.form.type = this.typelist[selVal].type
-      this.form.miType = this.typelist[selVal].miType
-      this.typename = this.typelist[selVal].name
     },
     cancelEdit(row) {
       row.title = row.originalTitle
@@ -167,12 +158,14 @@ export default {
       row.originalTitle = row.title
       const newdata = {
         id: row.id,
-        name: row.name
+        type: row.type,
+        name: row.name,
+        miType: row.miType
       }
-      upDataDevice(newdata).then(response => {
+      upDataType(newdata).then(response => {
         this.listLoading = false
         this.$message({
-          message: 'ID为 ' + row.id + ' 的设备名称更改成功',
+          message: 'ID为 ' + row.id + ' 的设备类型信息更改成功',
           type: 'success'
         })
       })
@@ -187,8 +180,8 @@ export default {
         const data = {
           id: row.id + ''
         }
-        delDevice(data).then(response => {
-          getList().then(response => {
+        delType(data).then(response => {
+          getTypeList().then(response => {
             const items = response.data.items
             this.list = items.map(v => {
               this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
@@ -198,13 +191,8 @@ export default {
           })
           this.listLoading = false
           this.$message({
-            message: '成功删除ID为 ' + row.id + ' 的设备',
+            message: '成功删除ID为 ' + row.did + ' 的设备',
             type: 'success'
-          })
-        }).catch((e) => {
-          this.$message({
-            type: 'info',
-            message: '删除失败,请联系管理员!(' + e.message + ')'
           })
         })
       }).catch(() => {
@@ -218,8 +206,8 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.listLoading = true
-          addDevice(this.form).then(response => {
-            getList().then(response => {
+          addType(this.form).then(response => {
+            getTypeList().then(response => {
               const items = response.data.items
               this.list = items.map(v => {
                 this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
@@ -229,8 +217,6 @@ export default {
             })
             this.listLoading = false
             this.$message('设备创建成功!')
-          }).catch(() => {
-            this.listLoading = false
           })
         } else {
           console.log('error submit!!')
@@ -240,20 +226,15 @@ export default {
     },
     onCancel(formName) {
       this.$refs[formName].resetFields()
-      this.typename = ''
     }
   }
 }
 </script>
 <style scoped>
 .edit-input {
-  padding-right: 100px;
+  padding-right: 20px;
 }
-.cancel-btn {
-  position: absolute;
-  right: 15px;
-  top: 10px;
-}
+
 .filter-container {
     padding-bottom: 10px;
     display: flex;
@@ -265,7 +246,7 @@ export default {
     margin-right: 5px;
 }
 .el-input {
-  width: 300px;
+  width: 200px;
 }
 
 </style>

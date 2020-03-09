@@ -2,9 +2,9 @@
  * @Author        : fineemb
  * @Github        : https://github.com/fineemb
  * @Description   : s
- * @Date          : 2020-03-03 22:04:12
+ * @Date          : 2020-03-05 23:19:59
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-04 20:28:35
+ * @LastEditTime  : 2020-03-09 21:47:23
  -->
 <template>
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
@@ -32,8 +32,8 @@ export default {
   },
   data() {
     return {
-      title: '泛艺智能家居平台',
-      logo: '@/assets/logo1-480x480-white.png'
+      title: '智能家居平台',
+      logo: 'https://avatars3.githubusercontent.com/u/49147538?s=200&v=4'
     }
   }
 }

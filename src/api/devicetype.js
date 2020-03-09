@@ -4,37 +4,37 @@
  * @Description   : s
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-09 21:03:04
+ * @LastEditTime  : 2020-03-07 23:31:10
  */
 import request from '@/utils/request'
 
-export function getList(params) {
+export function getTypeList(params) {
   return request({
-    url: '/user/device/list',
+    url: '/admin/deviceType/list',
     method: 'get',
     params
   })
 }
 
-export function addDevice(data) {
+export function addType(data) {
   return request({
-    url: '/user/device/add',
+    url: '/admin/deviceType/add',
     method: 'post',
     data
   })
 }
 
-export function delDevice(data) {
+export function delType(data) {
   return request({
-    url: '/user/device/delete',
+    url: '/admin/deviceType/delete',
     method: 'post',
     data
   })
 }
 
-export function upDataDevice(data) {
+export function upDataType(data) {
   return request({
-    url: '/user/device/update',
+    url: '/admin/deviceType/update',
     method: 'post',
     data
   })

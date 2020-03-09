@@ -6,7 +6,8 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    roles: []
   }
 }
 
@@ -24,6 +25,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   }
 }
 
@@ -33,9 +37,15 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        // 线上环境注释掉
+
+        commit('SET_TOKEN', response.token)
+        setToken(response.token)
+
+        // const { data } = response
+        // commit('SET_TOKEN', data.token)
+        // setToken(data.token)
+
         resolve()
       }).catch(error => {
         reject(error)
@@ -46,15 +56,21 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
+      getInfo().then(response => {
         const { data } = response
 
         if (!data) {
           reject('Verification failed, please Login again.')
         }
 
-        const { name, avatar } = data
+        const { roles, name, avatar } = data
 
+        // roles must be a non-empty array
+        if (!roles || roles.length <= 0) {
+          reject('getInfo: roles must be a non-null array!')
+        }
+
+        commit('SET_ROLES', roles)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         resolve(data)
@@ -67,14 +83,18 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      // logout(state.token).then(() => {
+      //   removeToken() // must remove  token  first
+      //   resetRouter()
+      //   commit('RESET_STATE')
+      //   resolve()
+      // }).catch(error => {
+      //   reject(error)
+      // })
+      removeToken() // must remove  token  first
+      resetRouter()
+      commit('RESET_STATE')
+      resolve()
     })
   },
 
