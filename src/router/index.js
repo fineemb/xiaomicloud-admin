@@ -62,7 +62,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Form',
         component: () => import('@/views/devices/index'),
-        meta: { title: '设备管理', icon: 'table' }
+        meta: { title: '设备管理', icon: 'devices' }
       }
     ]
   }
@@ -81,7 +81,7 @@ export const asyncRoutes = [
         path: 'index',
         name: 'Form',
         component: () => import('@/views/devicetype/index'),
-        meta: { title: '设备类型', icon: 'user' }
+        meta: { title: '设备类型', icon: 'device-type' }
       }
     ]
   },

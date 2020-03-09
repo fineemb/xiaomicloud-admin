@@ -4,7 +4,7 @@
  * @Description   : s
  * @Date          : 2020-03-05 23:19:59
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-08 09:50:52
+ * @LastEditTime  : 2020-03-09 21:47:23
  -->
 <template>
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       title: '智能家居平台',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo: 'https://avatars3.githubusercontent.com/u/49147538?s=200&v=4'
     }
   }
 }

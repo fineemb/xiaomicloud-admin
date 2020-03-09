@@ -105,13 +105,18 @@ export default {
           this.listLoading = true
           updatePass(this.passForm).then(response => {
             this.listLoading = false
-            this.$message('密码修改成功!')
+            this.$message('密码修改成功, 请重新登录!')
+            this.logout()
           })
         } else {
           console.log('error submit!!')
           return false
         }
       })
+    },
+    async logout() {
+      await this.$store.dispatch('user/logout')
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }

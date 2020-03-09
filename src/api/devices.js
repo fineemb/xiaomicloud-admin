@@ -4,7 +4,7 @@
  * @Description   : s
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-06 10:58:26
+ * @LastEditTime  : 2020-03-09 21:03:04
  */
 import request from '@/utils/request'
 
@@ -26,7 +26,7 @@ export function addDevice(data) {
 
 export function delDevice(data) {
   return request({
-    url: '/user/device/del',
+    url: '/user/device/delete',
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export function delDevice(data) {
 
 export function upDataDevice(data) {
   return request({
-    url: '/user/device/updata',
+    url: '/user/device/update',
     method: 'post',
     data
   })

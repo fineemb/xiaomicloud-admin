@@ -4,7 +4,7 @@
  * @Description   :  f
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-08 23:03:48
+ * @LastEditTime  : 2020-03-09 21:14:53
  -->
 <template>
   <div class="app-container">
@@ -31,6 +31,11 @@
       fit
       highlight-current-row
     >
+      <el-table-column align="center" label="ID" width="80">
+        <template slot-scope="scope">
+          {{ scope.row.id }}
+        </template>
+      </el-table-column>
       <el-table-column label="设备名称" width="180px" align="center" sortable prop="name">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
@@ -55,7 +60,7 @@
       <el-table-column align="left" label="操作">
         <template slot-scope="scope">
           <el-button
-            class="cancel-btn"
+            v-if="scope.row.edit"
             size="small"
             icon="el-icon-refresh"
             type="warning"
@@ -161,13 +166,13 @@ export default {
       row.edit = false
       row.originalTitle = row.title
       const newdata = {
-        did: row.did,
-        name: row.title
+        id: row.id,
+        name: row.name
       }
       upDataDevice(newdata).then(response => {
         this.listLoading = false
         this.$message({
-          message: 'ID为 ' + row.did + ' 的设备名称更改成功',
+          message: 'ID为 ' + row.id + ' 的设备名称更改成功',
           type: 'success'
         })
       })
@@ -180,7 +185,7 @@ export default {
       }).then(() => {
         this.listLoading = true
         const data = {
-          did: row.did
+          id: row.id + ''
         }
         delDevice(data).then(response => {
           getList().then(response => {
@@ -193,8 +198,13 @@ export default {
           })
           this.listLoading = false
           this.$message({
-            message: '成功删除ID为 ' + row.did + ' 的设备',
+            message: '成功删除ID为 ' + row.id + ' 的设备',
             type: 'success'
+          })
+        }).catch((e) => {
+          this.$message({
+            type: 'info',
+            message: '删除失败,请联系管理员!(' + e.message + ')'
           })
         })
       }).catch(() => {
