@@ -4,13 +4,23 @@
  * @Description   : s
  * @Date          : 2020-03-05 23:19:59
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-06 10:45:11
+ * @LastEditTime  : 2020-03-06 21:11:52
  */
 import request from '@/utils/request'
 
 export function login(data) {
   const res = request({
     url: '/signin',
+    method: 'post',
+    data
+  })
+  // console.log(res)
+  return res
+}
+
+export function updatePass(data) {
+  const res = request({
+    url: '/user/updatePass',
     method: 'post',
     data
   })

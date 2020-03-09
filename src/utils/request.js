@@ -4,7 +4,7 @@
  * @Description   : s
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-06 10:39:13
+ * @LastEditTime  : 2020-03-06 21:45:01
  */
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
@@ -65,9 +65,9 @@ service.interceptors.response.use(
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code) {
         // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
+        MessageBox.confirm('您已注销，可以取消停留在此页面上，或者再次登录', '确认注销', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           store.dispatch('user/resetToken').then(() => {

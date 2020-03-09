@@ -98,11 +98,24 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/updatePass',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        name: 'Form',
+        component: () => import('@/views/updatePass/index'),
+        meta: { title: '修改密码', icon: 'user' }
+      }
+    ]
+  },
+  {
     path: 'external-link',
     component: Layout,
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+        path: 'https://bbs.iobroker.cn/',
         meta: { title: '论坛', icon: 'link' }
       }
     ]

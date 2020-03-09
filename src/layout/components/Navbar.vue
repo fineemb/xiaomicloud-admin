@@ -16,10 +16,12 @@
               首页
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>修改密码</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
+          <router-link to="/updatePass/index">
+            <el-dropdown-item>
+              修改密码
+            </el-dropdown-item>
+          </router-link>
+          <a target="_blank" href="https://bbs.iobroker.cn/">
             <el-dropdown-item>论坛</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">

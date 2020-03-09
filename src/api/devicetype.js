@@ -4,11 +4,11 @@
  * @Description   : s
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-06 13:37:02
+ * @LastEditTime  : 2020-03-07 23:31:10
  */
 import request from '@/utils/request'
 
-export function getList(params) {
+export function getTypeList(params) {
   return request({
     url: '/admin/deviceType/list',
     method: 'get',
@@ -34,7 +34,7 @@ export function delType(data) {
 
 export function upDataType(data) {
   return request({
-    url: '/admin/deviceType/updata',
+    url: '/admin/deviceType/update',
     method: 'post',
     data
   })

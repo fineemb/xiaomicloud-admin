@@ -4,7 +4,7 @@
  * @Description   :  f
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-06 14:37:11
+ * @LastEditTime  : 2020-03-08 00:21:44
  -->
 <template>
   <div class="app-container">
@@ -40,34 +40,35 @@
 
       <el-table-column label="名称" width="200px" align="center" sortable prop="name">
         <template slot-scope="scope">
-          <template v-if="scope.row.edit">
-            <el-input v-model="scope.row.name" class="edit-input" size="small" />
-            <el-button
-              class="cancel-btn"
-              size="small"
-              icon="el-icon-refresh"
-              type="warning"
-              @click="cancelEdit(scope.row)"
-            >
-              取消
-            </el-button>
-          </template>
+          <el-input v-if="scope.row.edit" v-model="scope.row.name" class="edit-input" size="small" />
           <span v-else>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="NR类型" width="200" align="center" sortable prop="type">
         <template slot-scope="scope">
-          <span>{{ scope.row.type }}</span>
+          <el-input v-if="scope.row.edit" v-model="scope.row.type" class="edit-input" size="small" />
+          <span v-else>{{ scope.row.type }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="IOT类型" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.row.miType }}</span>
+          <el-input v-if="scope.row.edit" v-model="scope.row.miType" class="edit-input" size="small" />
+          <span v-else>{{ scope.row.miType }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="220">
+      <el-table-column align="left" label="操作">
         <template slot-scope="scope">
+          <el-button
+            v-if="scope.row.edit"
+            class="cancel-btn"
+            size="small"
+            icon="el-icon-refresh"
+            type="warning"
+            @click="cancelEdit(scope.row)"
+          >
+            取消
+          </el-button>
           <el-button
             v-if="scope.row.edit"
             type="success"
@@ -99,7 +100,7 @@
 </template>
 
 <script>
-import { getList, addType, delType, upDataType } from '@/api/devicetype'
+import { getTypeList, addType, delType, upDataType } from '@/api/devicetype'
 
 export default {
   filters: {
@@ -134,7 +135,7 @@ export default {
   methods: {
     fetchData() {
       // this.listLoading = true
-      getList().then(response => {
+      getTypeList().then(response => {
         const items = response.data.items
         this.list = items.map(v => {
           this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
@@ -156,13 +157,15 @@ export default {
       row.edit = false
       row.originalTitle = row.title
       const newdata = {
-        did: row.did,
-        name: row.title
+        id: row.id,
+        type: row.type,
+        name: row.name,
+        miType: row.miType
       }
       upDataType(newdata).then(response => {
         this.listLoading = false
         this.$message({
-          message: 'ID为 ' + row.did + ' 的设备名称更改成功',
+          message: 'ID为 ' + row.id + ' 的设备类型信息更改成功',
           type: 'success'
         })
       })
@@ -178,6 +181,14 @@ export default {
           id: row.id + ''
         }
         delType(data).then(response => {
+          getTypeList().then(response => {
+            const items = response.data.items
+            this.list = items.map(v => {
+              this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
+              v.originalTitle = v.title //  will be used when user click the cancel botton
+              return v
+            })
+          })
           this.listLoading = false
           this.$message({
             message: '成功删除ID为 ' + row.did + ' 的设备',
@@ -196,6 +207,14 @@ export default {
         if (valid) {
           this.listLoading = true
           addType(this.form).then(response => {
+            getTypeList().then(response => {
+              const items = response.data.items
+              this.list = items.map(v => {
+                this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
+                v.originalTitle = v.title //  will be used when user click the cancel botton
+                return v
+              })
+            })
             this.listLoading = false
             this.$message('设备创建成功!')
           })
@@ -213,13 +232,9 @@ export default {
 </script>
 <style scoped>
 .edit-input {
-  padding-right: 100px;
+  padding-right: 20px;
 }
-.cancel-btn {
-  position: absolute;
-  right: 15px;
-  top: 10px;
-}
+
 .filter-container {
     padding-bottom: 10px;
     display: flex;
@@ -231,7 +246,7 @@ export default {
     margin-right: 5px;
 }
 .el-input {
-  width: 300px;
+  width: 200px;
 }
 
 </style>

@@ -4,7 +4,7 @@
  * @Description   :  f
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-05 12:20:07
+ * @LastEditTime  : 2020-03-08 23:03:48
  -->
 <template>
   <div class="app-container">
@@ -14,10 +14,8 @@
           <el-input v-model="form.name" placeholder="小爱将用这个名称唤醒你的设备" />
         </el-form-item>
         <el-form-item prop="type" class="filter-item">
-          <el-select v-model="form.type" placeholder="选择一个设备类型">
-            <el-option label="灯" value="fine.light.light" />
-            <el-option label="插座" value="fine.plug.dc1" />
-            <el-option label="窗帘" value="fine.curtain.fv1" />
+          <el-select v-model="typename" placeholder="选择一个设备类型" @change="currentSel">
+            <el-option v-for="(item, index) in typelist" :key="item.id" :label="item.name" :value="index" />
           </el-select>
         </el-form-item>
         <el-button type="primary" icon="el-icon-circle-plus" class="filter-item" @click.native="onSubmit('form')"> 创建</el-button>
@@ -33,43 +31,38 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="设备ID" width="220">
-        <template slot-scope="scope">
-          {{ scope.row.did }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="设备名称" width="300px" align="center" sortable prop="name">
+      <el-table-column label="设备名称" width="180px" align="center" sortable prop="name">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
             <el-input v-model="scope.row.name" class="edit-input" size="small" />
-            <el-button
-              class="cancel-btn"
-              size="small"
-              icon="el-icon-refresh"
-              type="warning"
-              @click="cancelEdit(scope.row)"
-            >
-              取消
-            </el-button>
           </template>
           <span v-else>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="设备类型" width="110" align="center" sortable prop="type">
+      <el-table-column align="center" label="设备ID" width="250">
+        <template slot-scope="scope">
+          {{ scope.row.did }}
+        </template>
+      </el-table-column>
+
+      <el-table-column label="设备类型" width="250" align="center" sortable prop="type">
         <template slot-scope="scope">
           <span>{{ scope.row.type }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="创建日期" width="200">
+
+      <el-table-column align="left" label="操作">
         <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="操作" width="220">
-        <template slot-scope="scope">
+          <el-button
+            class="cancel-btn"
+            size="small"
+            icon="el-icon-refresh"
+            type="warning"
+            @click="cancelEdit(scope.row)"
+          >
+            取消
+          </el-button>
           <el-button
             v-if="scope.row.edit"
             type="success"
@@ -102,7 +95,7 @@
 
 <script>
 import { getList, addDevice, delDevice, upDataDevice } from '@/api/devices'
-
+import { getTypeList } from '@/api/devicetype'
 export default {
   filters: {
     statusFilter(status) {
@@ -117,10 +110,13 @@ export default {
   data() {
     return {
       list: null,
+      typelist: null,
       listLoading: true,
+      typename: '',
       form: {
         name: '',
-        type: ''
+        type: '',
+        miType: ''
       },
       rules: {
         name: [{ required: true, message: '请输入一个名称', trigger: 'blur' }],
@@ -141,8 +137,17 @@ export default {
           v.originalTitle = v.title //  will be used when user click the cancel botton
           return v
         })
-        this.listLoading = false
+        getTypeList().then(response => {
+          const items = response.data.items
+          this.typelist = items
+          this.listLoading = false
+        })
       })
+    },
+    currentSel(selVal) {
+      this.form.type = this.typelist[selVal].type
+      this.form.miType = this.typelist[selVal].miType
+      this.typename = this.typelist[selVal].name
     },
     cancelEdit(row) {
       row.title = row.originalTitle
@@ -178,6 +183,14 @@ export default {
           did: row.did
         }
         delDevice(data).then(response => {
+          getList().then(response => {
+            const items = response.data.items
+            this.list = items.map(v => {
+              this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
+              v.originalTitle = v.title //  will be used when user click the cancel botton
+              return v
+            })
+          })
           this.listLoading = false
           this.$message({
             message: '成功删除ID为 ' + row.did + ' 的设备',
@@ -196,8 +209,18 @@ export default {
         if (valid) {
           this.listLoading = true
           addDevice(this.form).then(response => {
+            getList().then(response => {
+              const items = response.data.items
+              this.list = items.map(v => {
+                this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
+                v.originalTitle = v.title //  will be used when user click the cancel botton
+                return v
+              })
+            })
             this.listLoading = false
             this.$message('设备创建成功!')
+          }).catch(() => {
+            this.listLoading = false
           })
         } else {
           console.log('error submit!!')
@@ -207,6 +230,7 @@ export default {
     },
     onCancel(formName) {
       this.$refs[formName].resetFields()
+      this.typename = ''
     }
   }
 }

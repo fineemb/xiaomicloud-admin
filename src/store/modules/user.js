@@ -37,9 +37,15 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        // const { data } = response
+        // 线上环境注释掉
+
         commit('SET_TOKEN', response.token)
         setToken(response.token)
+
+        // const { data } = response
+        // commit('SET_TOKEN', data.token)
+        // setToken(data.token)
+
         resolve()
       }).catch(error => {
         reject(error)

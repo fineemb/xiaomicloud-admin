@@ -4,7 +4,7 @@
  * @Description   : s
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-06 09:11:20
+ * @LastEditTime  : 2020-03-06 21:15:53
  */
 
 const tokens = {
@@ -49,7 +49,7 @@ export default [
       }
 
       return {
-        code: 20000,
+        code: 0,
         data: token
       }
     }
@@ -72,7 +72,7 @@ export default [
       }
 
       return {
-        code: 20000,
+        code: 0,
         data: info
       }
     }
@@ -84,7 +84,7 @@ export default [
     type: 'post',
     response: _ => {
       return {
-        code: 20000,
+        code: 0,
         data: 'success'
       }
     }
