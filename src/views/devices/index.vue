@@ -4,7 +4,7 @@
  * @Description   :  f
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-09 21:14:53
+ * @LastEditTime  : 2020-03-10 15:36:41
  -->
 <template>
   <div class="app-container">
@@ -87,6 +87,12 @@
             修改
           </el-button>
           <el-button
+            type="primary"
+            icon="el-icon-document-copy"
+            size="mini"
+            @click="configDevice(scope.row, $event)"
+          >复制配置</el-button>
+          <el-button
             type="danger"
             icon="el-icon-delete"
             size="mini"
@@ -101,6 +107,7 @@
 <script>
 import { getList, addDevice, delDevice, upDataDevice } from '@/api/devices'
 import { getTypeList } from '@/api/devicetype'
+import clip from '@/utils/clipboard'
 export default {
   filters: {
     statusFilter(status) {
@@ -147,6 +154,8 @@ export default {
           this.typelist = items
           this.listLoading = false
         })
+      }).catch((e) => {
+        this.listLoading = false
       })
     },
     currentSel(selVal) {
@@ -177,6 +186,12 @@ export default {
         })
       })
     },
+    configDevice(row, event) {
+      const typecon = this.typelist.filter(function(item) {
+        return item.type === row.type
+      })
+      clip(typecon.jsonConfig, event)
+    },
     delDevice(row) {
       this.$confirm('此操作将永久删除该设备, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -202,10 +217,7 @@ export default {
             type: 'success'
           })
         }).catch((e) => {
-          this.$message({
-            type: 'info',
-            message: '删除失败,请联系管理员!(' + e.message + ')'
-          })
+          this.listLoading = false
         })
       }).catch(() => {
         this.$message({

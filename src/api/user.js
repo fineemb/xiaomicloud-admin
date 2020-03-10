@@ -4,7 +4,7 @@
  * @Description   : s
  * @Date          : 2020-03-05 23:19:59
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-06 21:11:52
+ * @LastEditTime  : 2020-03-10 17:47:15
  */
 import request from '@/utils/request'
 
@@ -16,6 +16,32 @@ export function login(data) {
   })
   // console.log(res)
   return res
+}
+export function register(data) {
+  const res = request({
+    url: '/register',
+    method: 'post',
+    data
+  })
+  // console.log(res)
+  return res
+}
+
+export function addCode(data) {
+  const res = request({
+    url: '/admin/inviteCode/random10',
+    method: 'post',
+    data
+  })
+  // console.log(res)
+  return res
+}
+
+export function getCode(token) {
+  return request({
+    url: '/admin/inviteCode/list',
+    method: 'get'
+  })
 }
 
 export function updatePass(data) {

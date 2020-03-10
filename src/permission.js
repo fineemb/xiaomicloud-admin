@@ -1,3 +1,11 @@
+/*
+ * @Author        : fineemb
+ * @Github        : https://github.com/fineemb
+ * @Description   : s
+ * @Date          : 2020-03-09 21:55:06
+ * @LastEditors   : fineemb
+ * @LastEditTime  : 2020-03-10 15:15:40
+ */
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
@@ -8,7 +16,7 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login'] // no redirect whitelist
+const whiteList = ['/login', '/register'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar

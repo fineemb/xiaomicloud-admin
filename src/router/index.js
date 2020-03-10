@@ -38,6 +38,12 @@ export const constantRoutes = [
   },
 
   {
+    path: '/register',
+    component: () => import('@/views/register/index'),
+    hidden: true
+  },
+
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
@@ -54,13 +60,14 @@ export const constantRoutes = [
       meta: { title: '控制台', icon: 'dashboard' }
     }]
   },
+
   {
     path: '/devices',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'Devices',
         component: () => import('@/views/devices/index'),
         meta: { title: '设备管理', icon: 'devices' }
       }
@@ -79,9 +86,9 @@ export const asyncRoutes = [
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'DeviceType',
         component: () => import('@/views/devicetype/index'),
-        meta: { title: '设备类型', icon: 'device-type' }
+        meta: { title: '设备类型', icon: 'device-type', roles: ['admin'] }
       }
     ]
   },
@@ -91,9 +98,21 @@ export const asyncRoutes = [
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'Users',
         component: () => import('@/views/users/index'),
-        meta: { title: '用户管理', icon: 'user' }
+        meta: { title: '用户管理', icon: 'user', roles: ['admin'] }
+      }
+    ]
+  },
+  {
+    path: '/inviteCode',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'inviteCode',
+        component: () => import('@/views/inviteCode/index'),
+        meta: { title: '注册码', icon: 'code', roles: ['admin'] }
       }
     ]
   },
@@ -104,7 +123,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'updatePass',
         component: () => import('@/views/updatePass/index'),
         meta: { title: '修改密码', icon: 'user' }
       }

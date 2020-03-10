@@ -4,7 +4,7 @@
  * @Description   :  f
  * @Date          : 2020-03-03 22:04:12
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-08 00:21:44
+ * @LastEditTime  : 2020-03-10 09:47:05
  -->
 <template>
   <div class="app-container">
@@ -143,6 +143,8 @@ export default {
           return v
         })
         this.listLoading = false
+      }).catch((e) => {
+        this.listLoading = false
       })
     },
     cancelEdit(row) {
@@ -168,6 +170,8 @@ export default {
           message: 'ID为 ' + row.id + ' 的设备类型信息更改成功',
           type: 'success'
         })
+      }).catch((e) => {
+        this.listLoading = false
       })
     },
     delDevice(row) {
@@ -194,6 +198,8 @@ export default {
             message: '成功删除ID为 ' + row.did + ' 的设备',
             type: 'success'
           })
+        }).catch((e) => {
+          this.listLoading = false
         })
       }).catch(() => {
         this.$message({
@@ -217,6 +223,8 @@ export default {
             })
             this.listLoading = false
             this.$message('设备创建成功!')
+          }).catch((e) => {
+            this.listLoading = false
           })
         } else {
           console.log('error submit!!')

@@ -1,28 +1,39 @@
 <!--
  * @Author        : fineemb
  * @Github        : https://github.com/fineemb
- * @Description   : 
+ * @Description   : s
  * @Date          : 2020-03-05 23:19:59
  * @LastEditors   : fineemb
- * @LastEditTime  : 2020-03-08 00:26:07
+ * @LastEditTime  : 2020-03-10 14:54:08
  -->
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">欢迎您! {{ name }}</div>
-    <div class="dashboard-text">你的权限目前是: <span v-for="role in roles" :key="role">{{ role }}</span></div>
+    <div>{{ name }}, 欢迎您!</div>
+    <div v-if="roles.indexOf('admin') != -1">你的权限目前是: <span v-for="role in roles" :key="role">{{ role }}</span></div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import clip from '@/utils/clipboard'
 
 export default {
   name: 'Dashboard',
+  data() {
+    return {
+      code: ''
+    }
+  },
   computed: {
     ...mapGetters([
       'name',
       'roles'
     ])
+  },
+  methods: {
+    configDevice(text, event) {
+      clip(text, event)
+    }
   }
 }
 </script>
