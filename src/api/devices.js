@@ -40,3 +40,11 @@ export function upDataDevice(data) {
   })
 }
 
+export function upDataDeviceVisible(data) {
+  return request({
+    url: '/user/device/updateVisible',
+    method: 'post',
+    data
+  })
+}
+
