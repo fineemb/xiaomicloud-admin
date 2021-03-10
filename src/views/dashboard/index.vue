@@ -10,11 +10,17 @@
   <div class="dashboard-container">
     <div>{{ name }}, 欢迎您!</div>
     <div v-if="roles.indexOf('admin') != -1">你的权限目前是: <span v-for="role in roles" :key="role">{{ role }}</span></div>
+    <div>你的账号有效期： <span>{{info.expiredDate ? parseTime(info.expiredDate) : "长期有效"}}</span></div>
+    <div v-if="config && config.pushbearKey"> 
+      <div>你的企业微信授权地址： <span>https://wechat.jtsh.top/api/v1/cmd/wechat/{{config.userName}}/{{config.pushbearKey}}</span></div>
+      <div>你的pushbear详情访问地址： <span>https://wechat.jtsh.top/cmd/{{config.userName}}/{{config.pushbearKey}}</span></div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import {parseTime} from '@/utils'
 import clip from '@/utils/clipboard'
 
 export default {
@@ -27,13 +33,16 @@ export default {
   computed: {
     ...mapGetters([
       'name',
-      'roles'
+      'roles',
+      'info',
+      'config'
     ])
   },
   methods: {
     configDevice(text, event) {
       clip(text, event)
-    }
+    },
+    parseTime: parseTime
   }
 }
 </script>

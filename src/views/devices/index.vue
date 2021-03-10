@@ -93,6 +93,12 @@
             @click="configDevice(scope.row, $event)"
           >复制配置</el-button>
           <el-button
+            type="primary"
+            size="mini"
+            icon="el-icon-view"
+            @click="disableDevice(scope.row)"
+          >{{scope.row.isDelete == 1 ? "显示" : "隐藏"}}</el-button>
+          <el-button
             type="danger"
             icon="el-icon-delete"
             size="mini"
@@ -105,7 +111,7 @@
 </template>
 
 <script>
-import { getList, addDevice, delDevice, upDataDevice } from '@/api/devices'
+import { getList, addDevice, delDevice, upDataDevice, upDataDeviceVisible } from '@/api/devices'
 import { getTypeList } from '@/api/devicetype'
 import clip from '@/utils/clipboard'
 export default {
@@ -248,6 +254,22 @@ export default {
           console.log('error submit!!')
           return false
         }
+      })
+    },
+    disableDevice(row) {
+      // upDataDeviceVisible
+      this.listLoading = true
+      const newdata = {
+        id: row.id,
+        isDelete: row.isDelete == 1 ? 0 : 1
+      }
+      upDataDeviceVisible(newdata).then(response => {
+        this.listLoading = false
+        row.isDelete == 1 ? row.isDelete = 0 : row.isDelete = 
+        this.$message({
+          message: '设备状态更新成功',
+          type: 'success'
+        })
       })
     },
     onCancel(formName) {

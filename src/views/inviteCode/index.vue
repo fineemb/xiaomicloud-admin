@@ -8,7 +8,9 @@
  -->
 <template>
   <div class="app-container">
-    <el-button type="primary" icon="el-icon-circle-plus" class="add-button" @click="addCode"> 生成邀请码 </el-button>
+    <el-button type="primary" icon="el-icon-circle-plus" class="add-button" @click="addCode(12)"> 生成邀请码 </el-button>
+    <el-button type="primary" icon="el-icon-circle-plus" class="add-button" @click="addCode(1)"> 生成一个月有效期邀请码 </el-button>
+    <el-button type="primary" icon="el-icon-circle-plus" class="add-button" @click="addCode(3)"> 生成三个月有效期邀请码 </el-button>
 
     <el-table
       v-loading="listLoading"
@@ -26,6 +28,12 @@
       <el-table-column align="center" label="邀请码" width="500">
         <template slot-scope="scope">
           {{ scope.row.code }}
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="有效期" width=" 100">
+        <template slot-scope="scope">
+          {{ inviteType(scope.row.type) }}
         </template>
       </el-table-column>
 
@@ -90,9 +98,9 @@ export default {
     copyCode(row, event) {
       clip(row.code, event)
     },
-    addCode() {
+    addCode(type) {
       this.listLoading = true
-      addCode(this.passForm).then(response => {
+      addCode({type}).then(response => {
         getCode({}).then(response => {
           const items = response.data.items
           this.list = items
@@ -103,6 +111,16 @@ export default {
         this.listLoading = false
         this.$message('已生成新的注册码!')
       })
+    },
+    inviteType(type) {
+      switch(type) {
+        case 1:
+          return '一个月'
+        case 3:
+          return '三个月'
+        default:
+          return '一年'
+      }
     }
   }
 }
